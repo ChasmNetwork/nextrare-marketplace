@@ -1,18 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useJson, useSolPrice } from "@/components/ui";
 
-type Stats = { listings: number; listers: number; pulls: number; kept: number; soldBack: number; volume: number; pool: number };
-type Tr = { users: number; sim: { wallets: number; rips: number }; feedback: { count: number; avg: number } };
 const APP = "nextrare-marketplace.vercel.app";
 
-/** Ten slides, full-bleed, arrow keys / scroll. Slide 5 reads live numbers so the deck never goes stale. */
+/** Ten slides, full-bleed, arrow keys / scroll. Live devnet numbers live on /traction, linked from slide 4. */
 export default function Deck() {
-  const { data: s } = useJson<Stats>("/api/stats", [], 15000);
-  const { data: t } = useJson<Tr>("/api/traction", [], 15000);
-  const p = useSolPrice();
   const [i, setI] = useState(0);
-  const usd = (l: number) => (p ? `$${Math.round((l / 1e9) * p).toLocaleString()}` : "…");
   const go = (n: number) => { const el = document.getElementById(`s${n}`); if (el) { el.scrollIntoView({ behavior: "smooth" }); setI(n); } };
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
@@ -31,24 +24,23 @@ export default function Deck() {
     { k: "Title", h: <>NextRare <span className="grad">Marketplace</span></>, body: (
       <>
         <p className="lead">A trading card marketplace where listed cards earn while they wait to sell.</p>
-        <p className="meta">KC, Li Ho · live on Solana devnet · built at Startup Village Borneo, Sept 6–8 2026</p>
+        <p className="meta">KC Thee, Li Ho · live on Solana devnet · built at Startup Village Borneo, Sept 6–8 2026</p>
         <p className="meta"><a href={`https://${APP}`} target="_blank">{APP}</a></p>
       </>
     ) },
     { k: "Problem", h: <>List. Wait. <span className="grad">Hope.</span></>, body: (
       <ul>
-        <li>Collectors who list a graded card at a fair price wait weeks.</li>
-        <li>The only fast exit is selling under market.</li>
+        <li>Card demand never switches off, it moves between formats: Web2 marketplaces, tokenised cards, onchain gacha, thousands of local shops. Nothing connects them.</li>
+        <li>A collector who lists a graded card at a fair price waits weeks. The only fast exit is selling under market.</li>
         <li>While it waits, the card earns nothing.</li>
-        <li>Every marketplace today works this way.</li>
       </ul>
     ) },
     { k: "Solution", h: <>List once. <span className="grad">Sell two ways.</span></>, body: (
       <ul>
         <li>Your card is buyable at your price, and sits inside a gacha pack at the same time.</li>
-        <li>A ripper keeps it: you get full price, instantly.</li>
-        <li>A ripper takes cash instead: your card stays, and you get paid rent for waiting.</li>
-        <li>The card never leaves your wallet.</li>
+        <li>A ripper keeps it: you get full price, instantly. A ripper takes cash instead: your card stays, and you get paid rent for waiting.</li>
+        <li>The card never leaves your wallet. A Metaplex Core freeze plugin holds it, not us.</li>
+        <li>This is the onchain version of the stake-to-earn layer inside NextRare, the gacha we already run.</li>
       </ul>
     ) },
     { k: "Demo", h: <>Sixty seconds, <span className="grad">no signup.</span></>, body: (
@@ -60,53 +52,53 @@ export default function Deck() {
           <li>Rip a pack. Keep the card, or take 85% cash now</li>
           <li>Watch rent land in “My cards &amp; earnings”</li>
         </ol>
-        <p className="meta"><a href={`https://${APP}`} target="_blank">Open the live app ↗</a></p>
+        <p className="meta"><a href={`https://${APP}`} target="_blank">Open the live app ↗</a> · <a href={`https://${APP}/traction`} target="_blank">Live traction ↗</a></p>
       </>
     ) },
     { k: "Traction & business model", h: <>The gacha already <span className="grad">works.</span></>, body: (
       <>
-        <p className="meta" style={{ marginTop: 0 }}>NextRare gacha, our live product · Jan to Sep 2026 · 8 months</p>
+        <p className="meta" style={{ marginTop: 0 }}>NextRare gacha, live since January 2026 · 8 months · no paid acquisition</p>
         <div className="nums">
           <div><b>$1.26M</b><span>gross merchandise value</span></div>
           <div><b>$836k</b><span>transaction volume · 8,074 orders</span></div>
           <div><b>256</b><span>paying users · 2,537 signed in</span></div>
           <div><b>$3,265</b><span>volume per paying user</span></div>
           <div><b>$427k</b><span>cash returned on sell-backs</span></div>
-          <div><b>1,355</b><span>cards kept</span></div>
+          <div><b>1,046</b><span>packs opened in the offline pilot since May</span></div>
         </div>
-        <p className="meta">This marketplace, built here this week, live on devnet: <b style={{ color: "#f4f4f5" }}>{t?.users ?? "…"}</b> people used it · {s?.listings ?? "…"} cards listed · {s?.pulls ?? "…"} packs opened · {s ? usd(s.volume) : "…"} moved · {s ? (s.pool / 1e9).toFixed(2) : "…"} SOL rent paid to sellers. {t?.sim.wallets ? `${t.sim.wallets} simulated wallets ran the full flow as a load test, tagged and not counted.` : ""}</p>
         <ul className="tight">
-          <li><b>2%</b> when someone buys a card outright.</li>
-          <li>On a cash-out the ripper gets <b>85%</b>. The 15% gap is profit, <b>split 50/50</b> with the sellers in that pack.</li>
-          <li>They keep the card? Seller gets full price, we take nothing.</li>
+          <li>A typical cycle: pull a card worth <b>$42</b>, sell it back for <b>$38</b>. <b>86%</b> of cards are sold back, so inventory recycles instead of shipping out.</li>
+          <li>This marketplace: <b>2%</b> on direct buys. On a cash-out the ripper gets <b>85%</b>, the 15% gap is profit, <b>split 50/50</b> with the sellers in that pack.</li>
         </ul>
       </>
     ) },
-    { k: "Market · why now · why Solana", h: <>Slabs are already <span className="grad">onchain.</span></>, body: (
+    { k: "Market · why now · why Solana", h: <>Validated in the West. <span className="grad">Empty in SEA.</span></>, body: (
       <ul>
-        <li>Graded cards are the liquid end of collectibles, and they are moving onchain: Courtyard, Collector Crypt, NextRare.</li>
-        <li>Why now: the assets exist, the marketplaces for them are still list-and-wait.</li>
-        <li>Why Solana: the card is locked with a Metaplex Core freeze plugin, so we never hold it. Buy and keep settle in one transaction. Fees are cents, so a $5 pack works. Every roll is provable from the payment transaction.</li>
+        <li>Collector Crypt did ~$153M of gacha spend in Q1 2026. Courtyard went from $50k to ~$50M a month. Beezie has $170M+ cumulative GMV. All Western, online only, single brand.</li>
+        <li>Southeast Asia is the fastest-growing TCG market, deep collector culture, dense card-shop networks, and no aggregated hybrid platform.</li>
+        <li>Why Solana: non-custodial listings via Core plugins, one-transaction settlement, fees in cents so a $5 pack works, and every roll provable from the payment transaction.</li>
       </ul>
     ) },
     { k: "Competition", h: <>One listing, <span className="grad">both exits.</span></>, body: (
       <ul>
-        <li><b>OpenGacha</b>: gacha only, custodial vault, no fixed-price exit, sellers earn nothing.</li>
-        <li><b>Tensor · Magic Eden · Courtyard</b>: fixed price only, idle listings earn nothing.</li>
-        <li><b>Us</b>: both exits on one listing, non-custodial, and the waiting itself pays.</li>
+        <li><b>Collector Crypt · Courtyard · Beezie · OpenGacha</b>: buy their own players, hold their own inventory, one exit per listing, sellers earn nothing while they wait.</li>
+        <li><b>Tensor · Magic Eden</b>: fixed price only, idle listings earn nothing.</li>
+        <li><b>Us</b>: both exits on one listing, non-custodial, the waiting itself pays, and physical rails in SEA.</li>
       </ul>
     ) },
-    { k: "GTM · 3-month plan", h: <>Next <span className="grad">1,000 cards.</span></>, body: (
+    { k: "GTM · 3-month plan", h: <>Distribution we <span className="grad">already have.</span></>, body: (
       <ol>
-        <li><b>Month 1</b>: mainnet. NextRare’s 256 paying gacha users and its slab inventory are the first sellers and rippers.</li>
-        <li><b>Month 2</b>: pack partnerships with three card shops and graders. They list, their customers rip.</li>
-        <li><b>Month 3</b>: creator packs and referral rent, a share of rent for bringing a seller.</li>
+        <li><b>Activate</b> the 2,537 registered NextRare users against 256 paying: they become the first sellers and rippers on mainnet.</li>
+        <li><b>Penang flagship</b> opens October 2026, ~100 walk-ins a day, $300k+ of consignor inventory. The app is the shop’s wallet, so every purchase onboards a user.</li>
+        <li><b>Partners</b>: Speculate and CatchaCard live as white-label channels; Slabz and Discover Collectibles confirmed. Their inventory lists here, their users rip here.</li>
       </ol>
     ) },
     { k: "Team", h: <>Why <span className="grad">us.</span></>, body: (
       <ul>
-        <li><b>Li Ho</b>: built NextRare, the gacha that did $836k in volume in 8 months. Shipped this marketplace in three days.</li>
-        <li><b>KC</b>: business and partnerships, card shop and grader relationships.</li>
+        <li><b>KC Thee</b>, CEO: helped scale Binance across Southeast Asia, P2P and futures. Advisor to Virtuals.</li>
+        <li><b>John Koh</b>, CTO: former ML engineer at Eligible (YC 2012), Bitcoin since 2011.</li>
+        <li><b>Huey Lau</b>, COO: built Discover Collectibles, 130+ merchants across SEA retail.</li>
+        <li><b>Li Ho</b>, engineering: built the NextRare app and shipped this marketplace in three days.</li>
       </ul>
     ) },
     { k: "The ask", h: <>Help us <span className="grad">go mainnet.</span></>, body: (
