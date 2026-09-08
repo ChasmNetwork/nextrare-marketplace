@@ -102,12 +102,20 @@ export default function Deck() {
         <li><b>Li Ho</b>, engineering: built the NextRare app and shipped this marketplace in three days.</li>
       </ul>
     ) },
-    { k: "The ask", h: <>Help us <span className="grad">go mainnet.</span></>, body: (
-      <ul>
-        <li>Grant support for a security review of the vault and the mainnet launch.</li>
-        <li>Intros: Solana Foundation, Metaplex, Superteam MY collectors and card shops.</li>
-        <li>Try it now: <a href={`https://${APP}`} target="_blank">{APP}</a></li>
-      </ul>
+    { k: "The ask", h: <>Raising <span className="grad">$1M</span> at $10M post-money.</>, body: (
+      <>
+        <div className="nums" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
+          <div><b>$1M</b><span>raise</span></div>
+          <div><b>$10M</b><span>post-money valuation</span></div>
+          <div><b>24 mo</b><span>runway</span></div>
+        </div>
+        <ul className="tight">
+          <li><b>45%</b> user acquisition: activate the 2,537 registered users, partner and merchant onboarding.</li>
+          <li><b>25%</b> development: one more engineer, mainnet launch of this marketplace, membership out of beta.</li>
+          <li><b>30%</b> operations: licensing, on/off-ramp, vaulting and authentication.</li>
+          <li>Plus intros: Solana Foundation, Metaplex, Superteam MY collectors and card shops. Try it now: <a href={`https://${APP}`} target="_blank">{APP}</a></li>
+        </ul>
+      </>
     ) },
   ];
 
