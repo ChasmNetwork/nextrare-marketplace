@@ -90,7 +90,7 @@ export default function Deck() {
     { k: "GTM · 3-month plan", h: <>Distribution we <span className="grad">already have.</span></>, body: (
       <ol>
         <li><b>Activate</b> the 2,537 registered NextRare users against 256 paying: they become the first sellers and rippers on mainnet.</li>
-        <li><b>Penang flagship</b> opens October 2026, ~100 walk-ins a day, $300k+ of consignor inventory. The app is the shop’s wallet, so every purchase onboards a user.</li>
+        <li><b>Penang flagship</b> opens October 2026 with $300k+ of consignor inventory. The app is the shop’s wallet, so every purchase onboards a user.</li>
         <li><b>Partners</b>: Speculate and CatchaCard live as white-label channels; Slabz and Discover Collectibles confirmed. Their inventory lists here, their users rip here.</li>
       </ol>
     ) },
