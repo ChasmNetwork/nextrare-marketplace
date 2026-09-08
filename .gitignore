@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.keys/
+local.db*
+.next-dev.log
+localnet.db*
+.env.localnet
+.next-dev-localnet.log
+.vercel
+
+# local agent config
+.claude/
+.agents/
+skills-lock.json
