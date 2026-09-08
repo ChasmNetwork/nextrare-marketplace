@@ -8,12 +8,12 @@ import { LedBars, LedMeter, LiveTape } from "@/components/charts/led";
 import { addr, short } from "@/lib/client";
 
 type T = {
-  goal: number; users: number; active: number; team: number;
+  goal: number; users: number; active: number; team: number; sim: { wallets: number; rips: number; listed: number };
   funnel: { label: string; n: number }[];
   byRef: { ref: string; n: number }[];
   points: { t: number; v: number }[];
   feedback: { count: number; avg: number; dist: { label: string; n: number }[]; rows: { id: string; wallet: string | null; score: number; role: string | null; note: string | null; ref: string | null; createdAt: number }[] };
-  list: { wallet: string; ref: string | null; firstSeen: number; visits: number; listed: number; ripped: number; bought: number; rentLamports: number; feedback: number; team: boolean }[];
+  list: { wallet: string; ref: string | null; firstSeen: number; visits: number; listed: number; ripped: number; bought: number; rentLamports: number; feedback: number; team: boolean; sim: boolean }[];
 };
 
 const BASE = "https://nextrare-marketplace.vercel.app";
@@ -33,17 +33,18 @@ export default function Traction() {
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <div className="flex flex-wrap items-center gap-3"><h1 className="text-2xl font-bold sm:text-3xl">Traction</h1><Live at={at} className="glass glass-pill px-2.5 py-1" /></div>
-            <p className="mt-1 text-base font-medium text-zinc-800">Real wallets that used the live devnet app, and what they said. Our own demo wallets are excluded.</p>
+            <p className="mt-1 text-base font-medium text-zinc-800">Real wallets that used the live devnet app, and what they said. Our own wallets and the load-test wallets are shown separately and never counted.</p>
           </div>
           <Link href="/" className="glass glass-pill glass-interactive px-3 py-1.5 text-xs font-medium text-zinc-800">← Back to app</Link>
         </div>
 
         <div className="grid min-w-0 items-start gap-3 [&>*]:min-w-0 lg:grid-cols-2 2xl:grid-cols-4">
-          <div className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-2">
+          <div className="grid grid-cols-1 gap-2 min-[420px]:grid-cols-2 lg:col-span-2 lg:grid-cols-5 2xl:col-span-4">
             <Stat label="Users acquired" sol={d?.users ?? 0} plain hint={`goal ${d?.goal ?? 10} · ${d?.team ?? 0} team wallets excluded`} accent="#dd2023" meter={pct} />
             <Stat label="Did a transaction" sol={d?.active ?? 0} plain hint="listed, bought or ripped" />
             <Stat label="Feedback replies" sol={d?.feedback.count ?? 0} plain hint={`${d?.feedback.avg ?? 0} / 5 would use it`} />
             <Stat label="Waitlist signups" sol={wl?.count ?? 0} plain hint="no wallet needed · /about" />
+            <Stat label="Simulated wallets" sol={d?.sim.wallets ?? 0} plain hint={`load test · ${d?.sim.rips ?? 0} rips · ${d?.sim.listed ?? 0} listed · not counted`} />
           </div>
 
           <div className="glass led-surface p-3">
@@ -134,8 +135,8 @@ export default function Traction() {
             </thead>
             <tbody>
               {d?.list.map((u) => (
-                <tr key={u.wallet} className={`border-t border-black/5 ${u.team ? "opacity-50" : ""}`}>
-                  <td className="whitespace-nowrap px-2.5 py-2 font-medium"><a href={addr(u.wallet)} target="_blank" className="underline">{short(u.wallet)}</a>{u.team && <span className="ml-1.5 rounded-full bg-black/5 px-1.5 py-0.5 text-[10px]">team</span>}</td>
+                <tr key={u.wallet} className={`border-t border-black/5 ${u.team || u.sim ? "opacity-50" : ""}`}>
+                  <td className="whitespace-nowrap px-2.5 py-2 font-medium"><a href={addr(u.wallet)} target="_blank" className="underline">{short(u.wallet)}</a>{u.team && <span className="ml-1.5 rounded-full bg-black/5 px-1.5 py-0.5 text-[10px]">team</span>}{u.sim && <span className="ml-1.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] text-amber-800">simulated</span>}</td>
                   <td className="whitespace-nowrap px-2.5 py-2 text-zinc-700">{when(u.firstSeen)}</td>
                   <td className="px-2.5 py-2">{u.visits}</td>
                   <td className="px-2.5 py-2">{u.listed}</td>

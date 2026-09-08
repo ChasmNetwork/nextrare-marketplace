@@ -11,7 +11,7 @@ const TEAM = new Set((process.env.TEAM_WALLETS ?? [
   "JDM9rTfQzd1hWFxRNtJ8rE6CsTVaNiaZcZpffr2GpEYz",
 ].join(",")).split(",").map((s) => s.trim()).filter(Boolean));
 
-type U = { wallet: string; ref: string | null; firstSeen: number; visits: number; listed: number; ripped: number; bought: number; rentLamports: number; feedback: number; team: boolean };
+type U = { wallet: string; ref: string | null; firstSeen: number; visits: number; listed: number; ripped: number; bought: number; rentLamports: number; feedback: number; team: boolean; sim: boolean };
 
 /** Everything a judge asks about adoption, from data we already store. */
 export const GET = handle(async () => {
@@ -21,12 +21,13 @@ export const GET = handle(async () => {
   ]);
   const m = new Map<string, U>();
   const touch = (wallet: string, t: number) => {
-    const e = m.get(wallet) ?? { wallet, ref: null, firstSeen: t, visits: 0, listed: 0, ripped: 0, bought: 0, rentLamports: 0, feedback: 0, team: TEAM.has(wallet) };
+    const e = m.get(wallet) ?? { wallet, ref: null, firstSeen: t, visits: 0, listed: 0, ripped: 0, bought: 0, rentLamports: 0, feedback: 0, team: TEAM.has(wallet), sim: false };
     e.firstSeen = Math.min(e.firstSeen, t);
     m.set(wallet, e);
     return e;
   };
-  for (const u of us) { const e = touch(u.wallet, u.firstSeen); e.ref = u.ref; e.visits = u.visits; }
+  // scripts/sim.ts registers its wallets with ref "sim": shown in their own bucket, never counted as users
+  for (const u of us) { const e = touch(u.wallet, u.firstSeen); e.ref = u.ref; e.visits = u.visits; e.sim = u.ref === "sim"; }
   for (const l of ls) {
     touch(l.lister, l.createdAt).listed++;
     if (l.buyer && l.status === "sold") touch(l.buyer, l.createdAt).bought++;
@@ -36,7 +37,8 @@ export const GET = handle(async () => {
   for (const f of fb) if (f.wallet) touch(f.wallet, f.createdAt).feedback++;
 
   const all = [...m.values()].sort((a, b) => a.firstSeen - b.firstSeen);
-  const real = all.filter((u) => !u.team);
+  const real = all.filter((u) => !u.team && !u.sim);
+  const sims = all.filter((u) => u.sim);
   const acted = (u: U) => u.listed + u.ripped + u.bought > 0;
   const funnel = [
     { label: "Connected wallet", n: real.length },
@@ -53,7 +55,8 @@ export const GET = handle(async () => {
     goal: GOAL,
     users: real.length,
     active: real.filter(acted).length,
-    team: all.length - real.length,
+    team: all.filter((u) => u.team).length,
+    sim: { wallets: sims.length, rips: sims.reduce((a, u) => a + u.ripped, 0), listed: sims.reduce((a, u) => a + u.listed, 0) },
     funnel, byRef, points,
     feedback: {
       count: fb.length,

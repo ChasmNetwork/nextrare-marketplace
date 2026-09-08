@@ -5,7 +5,7 @@
 ## Links
 - **Live app (devnet):** https://nextrare-marketplace.vercel.app
 - **How it works + waitlist:** https://nextrare-marketplace.vercel.app/about
-- **Traction (real wallets, txs, feedback):** https://nextrare-marketplace.vercel.app/traction
+- **Traction (real wallets, txs, feedback):** https://nextrare-marketplace.vercel.app/traction — our own wallets and the `scripts/sim.ts` load-test wallets are tagged and excluded from the user count.
 - **Card collection (Metaplex Core):** https://explorer.solana.com/address/5VBfbWy24xMW7wVgkZb435yTmasCQ76wdW7UdPXvah8M?cluster=devnet
 - **Platform vault:** https://explorer.solana.com/address/41QAvFoVDbxcwCmxRtzFz1SQ3b5xjSHezCYVgpuduD3b?cluster=devnet
 - **Sample rip, roll recomputed in-browser:** https://nextrare-marketplace.vercel.app/pulls/53f931a6-5a11-4303-a072-c6a524102224 · payment tx with commitment memo: https://explorer.solana.com/tx/2vkveM9shKGBLFad7f2sCnqGG8SSgQ9Jrcmqk3LeBSGAhWRhU1C4RDEMnW1hzPETR42u9xWwHkSSPsTaYfwxSMYa?cluster=devnet
