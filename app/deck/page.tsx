@@ -21,9 +21,8 @@ export default function Deck() {
   }, []);
 
   const slides: { k: string; h: React.ReactNode; body: React.ReactNode }[] = [
-    { k: "Title", h: <><span className="grad">NextRare</span></>, body: (
+    { k: "Title", h: <>A trading card show <span className="grad">at your fingertips.</span></>, body: (
       <>
-        <p className="lead">A trading card show at your fingertips.</p>
         <p className="meta">Marketplace and gacha in one. List a card once, sell it two ways, earn while it waits.</p>
         <p className="meta">KC Thee, Li Ho · live on Solana devnet · built at Startup Village Borneo, Sept 6–8 2026</p>
         <p className="meta"><a href={`https://${APP}`} target="_blank">{APP}</a></p>
@@ -124,15 +123,17 @@ export default function Deck() {
       <style>{`
         .deck { background:#0b0b0d; color:#f4f4f5; scroll-snap-type:y mandatory; font-family:var(--font-sora),system-ui,sans-serif; }
         .deck section { min-height:100dvh; scroll-snap-align:start; display:grid; place-items:center; padding:clamp(20px,5vw,64px); position:relative;
-          background: radial-gradient(60% 50% at 80% 0%, rgba(124,58,237,.18), transparent 60%), radial-gradient(50% 50% at 0% 100%, rgba(16,185,129,.14), transparent 60%); }
+          background: radial-gradient(60% 50% at 80% 0%, rgba(221,32,35,.16), transparent 60%), radial-gradient(50% 50% at 0% 100%, rgba(255,174,107,.10), transparent 60%); }
         .deck .box { width:min(1100px,100%); border:2px solid transparent; border-radius:18px; padding:clamp(20px,4vw,48px);
-          background: linear-gradient(#0e0e11,#0e0e11) padding-box, linear-gradient(135deg,#8b5cf6,#22d3ee,#34d399) border-box; }
-        .deck .kicker { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#a1a1aa; }
+          background: linear-gradient(#0e0e11,#0e0e11) padding-box, linear-gradient(135deg,#660f10,#dd2023 45%,#ff734c 75%,#ffae6b) border-box; }
+        .deck .kicker { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:#a1a1aa; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+        .deck .kicker img { height:18px; width:auto; }
+        .deck .hero-logo { height:clamp(40px,6vw,72px); width:auto; margin-bottom:10px; display:block; }
         .deck h2 { font-size:clamp(28px,5vw,60px); font-weight:800; line-height:1.05; margin:.35em 0 .6em; letter-spacing:-.02em; }
-        .deck .grad { background:linear-gradient(90deg,#8b5cf6,#22d3ee,#34d399); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .deck .grad { background:linear-gradient(90deg,#dd2023,#ff734c,#ffae6b); -webkit-background-clip:text; background-clip:text; color:transparent; }
         .deck .lead { font-size:clamp(18px,2.4vw,28px); color:#e4e4e7; max-width:28ch; }
         .deck .meta { color:#a1a1aa; font-size:clamp(13px,1.4vw,16px); margin-top:14px; }
-        .deck a { color:#67e8f9; text-decoration:underline; text-underline-offset:3px; }
+        .deck a { color:#ffae6b; text-decoration:underline; text-underline-offset:3px; }
         .deck ul, .deck ol { display:grid; gap:.55em; font-size:clamp(16px,2vw,24px); line-height:1.35; color:#e4e4e7; padding-left:1.2em; max-width:60ch; }
         .deck ol { list-style:decimal; } .deck ul { list-style:disc; }
         .deck .tight { font-size:clamp(14px,1.6vw,19px); margin-top:18px; }
@@ -142,7 +143,7 @@ export default function Deck() {
         .deck .nums span { color:#a1a1aa; font-size:13px; }
         .deck .pager { position:fixed; right:14px; top:50%; transform:translateY(-50%); display:grid; gap:8px; z-index:2; }
         .deck .pager button { width:8px; height:8px; border-radius:99px; background:rgba(255,255,255,.25); border:0; padding:0; cursor:pointer; }
-        .deck .pager button[data-on="true"] { background:#22d3ee; height:22px; }
+        .deck .pager button[data-on="true"] { background:#ff734c; height:22px; }
         .deck .foot { position:absolute; left:0; right:0; bottom:12px; display:flex; justify-content:space-between; padding:0 clamp(20px,5vw,64px); color:#71717a; font-size:12px; }
         @media print { .deck { position:static; overflow:visible; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
           .deck section { height:7.5in; min-height:0; box-sizing:border-box; page-break-after:always; break-after:page; scroll-snap-align:none; }
@@ -152,7 +153,8 @@ export default function Deck() {
       {slides.map((sl, n) => (
         <section key={n} id={`s${n}`} data-slide={n}>
           <div className="box">
-            <div className="kicker">{String(n + 1).padStart(2, "0")} · {sl.k}</div>
+            <div className="kicker"><span>{String(n + 1).padStart(2, "0")} · {sl.k}</span><img src="/nextrare-logo.svg" alt="NextRare" /></div>
+            {n === 0 && <img className="hero-logo" src="/nextrare-logo.svg" alt="NextRare" />}
             <h2>{sl.h}</h2>
             {sl.body}
           </div>

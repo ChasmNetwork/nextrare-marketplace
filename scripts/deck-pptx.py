@@ -5,7 +5,8 @@ from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 
-BG, INK, MUTED, ACC, ACC2, TILE = "0B0B0D", "F4F4F5", "A1A1AA", "22D3EE", "8B5CF6", "17171B"
+BG, INK, MUTED, ACC, RED, TILE = "0B0B0D", "F4F4F5", "A1A1AA", "FF734C", "DD2023", "17171B"
+LOGO = "public/brand/nextrare-logo.png"
 APP = "nextrare-marketplace.vercel.app"
 rgb = lambda h: RGBColor.from_string(h)
 
@@ -37,7 +38,8 @@ def slide(n, kicker, head, accent, body_fn):
     s = prs.slides.add_slide(blank)
     s.background.fill.solid(); s.background.fill.fore_color.rgb = rgb(BG)
     box = s.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.6), Inches(0.5), Inches(12.133), Inches(6.5))
-    box.adjustments[0] = 0.03; box.fill.solid(); box.fill.fore_color.rgb = rgb("0E0E11"); box.line.color.rgb = rgb(ACC); box.line.width = Pt(2)
+    box.adjustments[0] = 0.03; box.fill.solid(); box.fill.fore_color.rgb = rgb("0E0E11"); box.line.color.rgb = rgb(RED); box.line.width = Pt(2)
+    if n > 1: s.shapes.add_picture(LOGO, Inches(10.3), Inches(0.88), height=Inches(0.36))
     text(s, 1.1, 0.95, 11, 0.35, f"{n:02d} · {kicker.upper()}", size=11, color=MUTED)
     text(s, 1.1, 1.3, 11.2, 1.1, [[(head + " " if head else "", {}), (accent, {"color": ACC})]], size=40, bold=True)
     body_fn(s)
@@ -54,11 +56,12 @@ B = {"bold": True}
 
 # 01
 def s1(s):
-    text(s, 1.1, 2.7, 11, 0.8, "A trading card show at your fingertips.", size=28, color="E4E4E7")
-    text(s, 1.1, 3.6, 11, 0.6, "Marketplace and gacha in one. List a card once, sell it two ways, earn while it waits.", size=17, color=MUTED)
-    text(s, 1.1, 4.5, 11, 0.5, "KC Thee, Li Ho  ·  live on Solana devnet  ·  built at Startup Village Borneo, Sept 6–8 2026", size=14, color=MUTED)
-    text(s, 1.1, 5.0, 11, 0.5, APP, size=14, color=ACC)
-slide(1, "Title", "", "NextRare", s1)
+    s.shapes.add_picture(LOGO, Inches(1.1), Inches(1.35), height=Inches(0.9))
+    text(s, 1.1, 2.5, 11, 1.0, [[("A trading card show ", {}), ("at your fingertips.", {"color": ACC})]], size=40, bold=True)
+    text(s, 1.1, 3.75, 11, 0.6, "Marketplace and gacha in one. List a card once, sell it two ways, earn while it waits.", size=17, color=MUTED)
+    text(s, 1.1, 4.6, 11, 0.5, "KC Thee, Li Ho  ·  live on Solana devnet  ·  built at Startup Village Borneo, Sept 6–8 2026", size=14, color=MUTED)
+    text(s, 1.1, 5.1, 11, 0.5, APP, size=14, color=ACC)
+slide(1, "Title", "", "", s1)
 
 slide(2, "Problem", "List. Wait.", "Hope.", lambda s: bullets(s, [
     "Card demand never switches off, it moves between formats: Web2 marketplaces, tokenised cards, onchain gacha, thousands of local shops. Nothing connects them.",
