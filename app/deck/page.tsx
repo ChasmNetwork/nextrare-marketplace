@@ -10,7 +10,6 @@ const APP = "nextrare-marketplace.vercel.app";
 export default function Deck() {
   const { data: s } = useJson<Stats>("/api/stats", [], 15000);
   const { data: t } = useJson<Tr>("/api/traction", [], 15000);
-  const { data: w } = useJson<{ count: number }>("/api/waitlist", [], 30000);
   const p = useSolPrice();
   const [i, setI] = useState(0);
   const usd = (l: number) => (p ? `$${Math.round((l / 1e9) * p).toLocaleString()}` : "…");
@@ -64,17 +63,18 @@ export default function Deck() {
         <p className="meta"><a href={`https://${APP}`} target="_blank">Open the live app ↗</a></p>
       </>
     ) },
-    { k: "Traction & business model", h: <>Live numbers, <span className="grad">right now.</span></>, body: (
+    { k: "Traction & business model", h: <>The gacha already <span className="grad">works.</span></>, body: (
       <>
+        <p className="meta" style={{ marginTop: 0 }}>NextRare gacha, our live product · Jan to Sep 2026 · 8 months</p>
         <div className="nums">
-          <div><b>{t?.users ?? "…"}</b><span>people used it</span></div>
-          <div><b>{s?.listings ?? "…"}</b><span>cards listed by {s?.listers ?? "…"} wallets</span></div>
-          <div><b>{s?.pulls ?? "…"}</b><span>packs opened</span></div>
-          <div><b>{s ? usd(s.volume) : "…"}</b><span>moved through packs</span></div>
-          <div><b>{s ? (s.pool / 1e9).toFixed(2) : "…"} SOL</b><span>rent paid to sellers</span></div>
-          <div><b>{s?.pulls ? Math.round((s.soldBack / s.pulls) * 10) : "…"} of 10</b><span>rippers took the cash</span></div>
+          <div><b>$1.26M</b><span>gross merchandise value</span></div>
+          <div><b>$836k</b><span>transaction volume · 8,074 orders</span></div>
+          <div><b>256</b><span>paying users · 2,537 signed in</span></div>
+          <div><b>$3,265</b><span>volume per paying user</span></div>
+          <div><b>$427k</b><span>cash returned on sell-backs</span></div>
+          <div><b>1,355</b><span>cards kept</span></div>
         </div>
-        <p className="meta">Plus {t?.sim.wallets ?? 0} simulated wallets ran the full flow as a load test, tagged on the dashboard and not counted. {w?.count ? `${w.count} on the waitlist. ` : ""}{t?.feedback.count ? `${t.feedback.count} feedback replies, ${t.feedback.avg}/5 would use it.` : ""}</p>
+        <p className="meta">This marketplace, built here this week, live on devnet: <b style={{ color: "#f4f4f5" }}>{t?.users ?? "…"}</b> people used it · {s?.listings ?? "…"} cards listed · {s?.pulls ?? "…"} packs opened · {s ? usd(s.volume) : "…"} moved · {s ? (s.pool / 1e9).toFixed(2) : "…"} SOL rent paid to sellers. {t?.sim.wallets ? `${t.sim.wallets} simulated wallets ran the full flow as a load test, tagged and not counted.` : ""}</p>
         <ul className="tight">
           <li><b>2%</b> when someone buys a card outright.</li>
           <li>On a cash-out the ripper gets <b>85%</b>. The 15% gap is profit, <b>split 50/50</b> with the sellers in that pack.</li>
@@ -98,14 +98,14 @@ export default function Deck() {
     ) },
     { k: "GTM · 3-month plan", h: <>Next <span className="grad">1,000 cards.</span></>, body: (
       <ol>
-        <li><b>Month 1</b>: mainnet with NextRare’s own graded slab inventory. Existing collectors are the first sellers.</li>
+        <li><b>Month 1</b>: mainnet. NextRare’s 256 paying gacha users and its slab inventory are the first sellers and rippers.</li>
         <li><b>Month 2</b>: pack partnerships with three card shops and graders. They list, their customers rip.</li>
         <li><b>Month 3</b>: creator packs and referral rent, a share of rent for bringing a seller.</li>
       </ol>
     ) },
     { k: "Team", h: <>Why <span className="grad">us.</span></>, body: (
       <ul>
-        <li><b>Li Ho</b>: built NextRare, the graded-card app this plugs into. Shipped this marketplace in three days.</li>
+        <li><b>Li Ho</b>: built NextRare, the gacha that did $836k in volume in 8 months. Shipped this marketplace in three days.</li>
         <li><b>KC</b>: business and partnerships, card shop and grader relationships.</li>
       </ul>
     ) },
