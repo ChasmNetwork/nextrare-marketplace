@@ -21,9 +21,10 @@ export default function Deck() {
   }, []);
 
   const slides: { k: string; h: React.ReactNode; body: React.ReactNode }[] = [
-    { k: "Title", h: <>NextRare <span className="grad">Marketplace</span></>, body: (
+    { k: "Title", h: <><span className="grad">NextRare</span></>, body: (
       <>
-        <p className="lead">A trading card marketplace where listed cards earn while they wait to sell.</p>
+        <p className="lead">A trading card show at your fingertips.</p>
+        <p className="meta">Marketplace and gacha in one. List a card once, sell it two ways, earn while it waits.</p>
         <p className="meta">KC Thee, Li Ho · live on Solana devnet · built at Startup Village Borneo, Sept 6–8 2026</p>
         <p className="meta"><a href={`https://${APP}`} target="_blank">{APP}</a></p>
       </>
@@ -145,7 +146,7 @@ export default function Deck() {
             <h2>{sl.h}</h2>
             {sl.body}
           </div>
-          <div className="foot"><span>NextRare Marketplace</span><span>{n + 1} / {slides.length}</span></div>
+          <div className="foot"><span>NextRare</span><span>{n + 1} / {slides.length}</span></div>
         </section>
       ))}
     </div>
