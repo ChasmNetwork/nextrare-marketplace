@@ -124,3 +124,10 @@ html { scroll-behavior: smooth }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* print = the deck PDF: chrome off, no page padding, exact colours */
+@media print {
+  header, .mesh, .fixed.bottom-4 { display: none !important; }
+  main { padding: 0 !important; }
+  html, body { background: #0b0b0d !important; margin: 0; }
+}

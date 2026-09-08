@@ -144,7 +144,9 @@ export default function Deck() {
         .deck .pager button { width:8px; height:8px; border-radius:99px; background:rgba(255,255,255,.25); border:0; padding:0; cursor:pointer; }
         .deck .pager button[data-on="true"] { background:#22d3ee; height:22px; }
         .deck .foot { position:absolute; left:0; right:0; bottom:12px; display:flex; justify-content:space-between; padding:0 clamp(20px,5vw,64px); color:#71717a; font-size:12px; }
-        @media print { .deck { position:static; } .deck section { min-height:0; page-break-after:always; } .deck .pager { display:none; } }
+        @media print { .deck { position:static; overflow:visible; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+          .deck section { height:7.5in; min-height:0; box-sizing:border-box; page-break-after:always; break-after:page; scroll-snap-align:none; }
+          .deck section:last-child { page-break-after:auto; break-after:auto; } .deck .pager { display:none; } .deck .foot { position:absolute; } }
       `}</style>
       <div className="pager" aria-hidden>{slides.map((_, n) => <button key={n} data-on={i === n} onClick={() => go(n)} />)}</div>
       {slides.map((sl, n) => (
