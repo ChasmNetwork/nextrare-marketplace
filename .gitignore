@@ -51,3 +51,5 @@ localnet.db*
 .claude/
 .agents/
 skills-lock.json
+
+docs/video/
